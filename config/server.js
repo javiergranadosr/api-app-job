@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const fileUpload = require("express-fileupload");
 const { connection } = require("./connection.db");
 
 /**
@@ -13,6 +14,7 @@ class Server {
     this.port = process.env.PORT || 8080;
     this.enpoints = {
       users: "/api/v1/users",
+      storages: "/api/v1/storages",
     };
 
     this.connection();
@@ -36,10 +38,19 @@ class Server {
     this.app.use(express.json());
     // CONFIGURACION DE MORGAN
     this.app.use(morgan("dev"));
+    // Fileupload - Carga de archivos
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+        createParentPath: true,
+      })
+    );
   }
 
   routes() {
     this.app.use(this.enpoints.users, require("../routes/user.route"));
+    this.app.use(this.enpoints.storages, require("../routes/storage.route"));
   }
 
   listen() {
