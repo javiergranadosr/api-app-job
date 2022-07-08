@@ -3,6 +3,10 @@ const cors = require("cors");
 const morgan = require("morgan");
 const { connection } = require("./connection.db");
 
+/**
+ * Configuracion del servidor express
+ */
+
 class Server {
   constructor() {
     this.app = express();
