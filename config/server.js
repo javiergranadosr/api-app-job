@@ -14,6 +14,7 @@ class Server {
     this.port = process.env.PORT || 8080;
     this.enpoints = {
       users: "/api/v1/users",
+      auth: "/api/v1/auth",
       storages: "/api/v1/storages",
     };
 
@@ -50,6 +51,7 @@ class Server {
 
   routes() {
     this.app.use(this.enpoints.users, require("../routes/user.route"));
+    this.app.use(this.enpoints.auth, require("../routes/auth.route"));
     this.app.use(this.enpoints.storages, require("../routes/storage.route"));
   }
 
