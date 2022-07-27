@@ -3,8 +3,8 @@ const bcryptjs = require("bcryptjs");
 
 /**
  * Crea un nuevo usuario
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 const createUser = async (req, res) => {
   try {
@@ -26,6 +26,37 @@ const createUser = async (req, res) => {
   }
 };
 
+/**
+ * Actualizar informacion de usuario
+ * @param {*} req
+ * @param {*} res
+ */
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { name, email, password } = req.body;
+
+    let data = { name };
+
+    if (email) {
+      data.email = email;
+    }
+
+    if (password) {
+      const salt = bcryptjs.genSaltSync();
+      data.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(userId, data, {new: true});
+
+    res.json({ message: "Cuenta actualizada con éxito.", data: user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating user." });
+  }
+};
+
 module.exports = {
   createUser,
+  updateUser,
 };

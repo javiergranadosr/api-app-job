@@ -12,7 +12,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).populate("roleId", "name");
-
     if (!user) {
       return res
         .status(400)
@@ -30,7 +29,7 @@ const login = async (req, res) => {
         .json({ message: "Usuario / Password incorrectos." });
     }
 
-    const token = await generateJwt(user.uid, user.name, user.surname);
+    const token = await generateJwt(user._id, user.name);
 
     res.json({ token, data: user });
   } catch (error) {

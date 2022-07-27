@@ -10,7 +10,7 @@ const User = require("../models/user.model");
  */
 const validateJwt = async (req, res, next) => {
   try {
-    const token = req.header("x-token");
+    const token = req.header("token");
 
     if (!token) {
       return res
@@ -18,7 +18,7 @@ const validateJwt = async (req, res, next) => {
         .json({ message: "No hay token de usuario en la petición." });
     }
 
-    const { uid, name, surname } = jwt.verify(token, process.env.SECRET_KEY);
+    const { uid, name} = jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findById(uid);
 
     if (!user) {
