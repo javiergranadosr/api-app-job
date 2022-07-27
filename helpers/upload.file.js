@@ -20,4 +20,15 @@ const uploadFile = async (file, folder) => {
   }
 };
 
-module.exports = { uploadFile };
+/**
+ * Elimina el archivo de acuerdo a la ruta ingresada
+ * @param {*} shortName 
+ * @param {*} pathFolder 
+ */
+const deleteFile = async (shortName, pathFolder) => {
+  const name = shortName[shortName.length - 1];
+  const [public_id] = name.split(".");
+  cloudinary.uploader.destroy(`${pathFolder}/${public_id}`);
+}
+
+module.exports = { uploadFile, deleteFile };
