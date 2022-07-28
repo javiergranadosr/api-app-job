@@ -16,6 +16,7 @@ class Server {
       users: "/api/v1/users",
       auth: "/api/v1/auth",
       storages: "/api/v1/storages",
+      categories: "/api/v1/categories",
     };
 
     this.connection();
@@ -53,6 +54,7 @@ class Server {
     this.app.use(this.enpoints.users, require("../routes/user.route"));
     this.app.use(this.enpoints.auth, require("../routes/auth.route"));
     this.app.use(this.enpoints.storages, require("../routes/storage.route"));
+    this.app.use(this.enpoints.categories, require("../routes/category.route"));
   }
 
   listen() {

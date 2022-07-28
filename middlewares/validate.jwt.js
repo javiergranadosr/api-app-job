@@ -31,6 +31,8 @@ const validateJwt = async (req, res, next) => {
       return res.status(401).json({ message: "Usuario dado de baja." });
     }
 
+    req.user = user;
+
     next();
   } catch (error) {
     console.log(error);
