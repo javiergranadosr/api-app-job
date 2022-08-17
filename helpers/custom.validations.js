@@ -3,7 +3,7 @@ const Role = require("../models/role.model");
 
 /**
  * Valida usuario por id
- * @param {*} id 
+ * @param {*} id
  */
 const existUserById = async (id) => {
   const exists = await User.findById(id);
@@ -32,9 +32,11 @@ const existEmail = async (email) => {
  * @param {*} roleId
  */
 const existRole = async (roleId) => {
-  const exists = await Role.findById(roleId);
-  if (!exists) {
-    throw new Error(`El rol seleccionado no es válido.`);
+  if (roleId) {
+    const exists = await Role.findById(roleId);
+    if (!exists) {
+      throw new Error(`El rol seleccionado no es válido.`);
+    }
   }
 };
 

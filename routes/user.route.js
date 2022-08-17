@@ -15,7 +15,7 @@ router.post(
     check("email", "El correo electrónico es requerido.").isEmail(),
     check("email").custom(existEmail),
     check("roleId", "El rol de usuario es requerido.").not().isEmpty(),
-    check("roleId").isMongoId(),
+    check("roleId", "Rol de usuario invalido.").isMongoId(),
     check("roleId").custom(existRole),
     check("password", "La contraseña es requerida.").not().isEmpty(),
     validate,
