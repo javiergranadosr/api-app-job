@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
+const Category = require("../models/category.model");
 
 /**
  * Valida usuario por id
@@ -40,8 +41,22 @@ const existRole = async (roleId) => {
   }
 };
 
+/**
+ * Valida categoria por id
+ * @param {*} id
+ */
+ const existCategoryById = async (id) => {
+  const exists = await Category.findById(id);
+  if (!exists) {
+    throw new Error(
+      `La categoría seleccionada es invalida, favor de contactar a un administrador.`
+    );
+  }
+};
+
 module.exports = {
   existUserById,
   existEmail,
   existRole,
+  existCategoryById
 };

@@ -3,6 +3,7 @@ const AuthController = require("../controllers/auth.controller");
 const StorageController = require("../controllers/storage.controller");
 const CategoryController = require("../controllers/category.controller");
 const RoleController = require("../controllers/role.controller");
+const VacantController = require("../controllers/vacant.controller");
 
 module.exports = {
   ...UserController,
@@ -10,4 +11,5 @@ module.exports = {
   ...StorageController,
   ...CategoryController,
   ...RoleController,
+  ...VacantController,
 };
