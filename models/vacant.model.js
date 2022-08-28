@@ -20,7 +20,7 @@ const VacantSchema = Schema(
       required: [true, "El nombre de la empresa es requerido."],
     },
     lastDate: {
-      type: String,
+      type: Date,
       required: [true, "La fecha para postularse es requerida."],
     },
     description: {
@@ -36,6 +36,10 @@ const VacantSchema = Schema(
       ref: "User",
       required: [true, "El autor o autora de la vacante es requerido."],
     },
+    status: {
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true,
@@ -44,7 +48,8 @@ const VacantSchema = Schema(
 );
 
 VacantSchema.methods.toJSON = function () {
-  const { __v, _id, createdAt, updatedAt, ...vacant } = this.toObject();
+  const { __v, _id, status, createdAt, updatedAt, ...vacant } = this.toObject();
+  vacant.uid = _id;
   return vacant;
 };
 

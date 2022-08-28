@@ -1,14 +1,21 @@
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
 const Category = require("../models/category.model");
+const mongoose = require("mongoose");
 
 /**
  * Valida usuario por id
  * @param {*} id
  */
 const existUserById = async (id) => {
-  const exists = await User.findById(id);
-  if (!exists) {
+  if (mongoose.isValidObjectId(id)) {
+    const exists = await User.findById(id);
+    if (!exists) {
+      throw new Error(
+        `El usuario ingresado es invalido, favor de contactar a un administrador.`
+      );
+    }
+  } else {
     throw new Error(
       `El usuario ingresado es invalido, favor de contactar a un administrador.`
     );
@@ -45,9 +52,15 @@ const existRole = async (roleId) => {
  * Valida categoria por id
  * @param {*} id
  */
- const existCategoryById = async (id) => {
-  const exists = await Category.findById(id);
-  if (!exists) {
+const existCategoryById = async (id) => {
+  if (mongoose.isValidObjectId(id)) {
+    const exists = await Category.findById(id);
+    if (!exists) {
+      throw new Error(
+        `La categoría seleccionada es invalida, favor de contactar a un administrador.`
+      );
+    }
+  } else {
     throw new Error(
       `La categoría seleccionada es invalida, favor de contactar a un administrador.`
     );
@@ -58,5 +71,5 @@ module.exports = {
   existUserById,
   existEmail,
   existRole,
-  existCategoryById
+  existCategoryById,
 };
