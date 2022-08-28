@@ -7,7 +7,7 @@ const validate = require("../middlewares/validate");
 const router = Router();
 
 router.put(
-  "/uploadFile/:collection/:userId",
+  "/uploadFile/:collection/:id",
   [validateJwt, validate, validateFile],
   updateFile
 );

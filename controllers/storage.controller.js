@@ -2,23 +2,24 @@ const cloudinary = require("cloudinary").v2;
 cloudinary.config(process.env.CLOUDINARY_URL);
 const { uploadFile, deleteFile } = require("../helpers/upload.file");
 const User = require("../models/user.model");
-
-//TODO: Cargar CV, Imagenes de perfil e Imagenes de la vacante
+const Vacant = require("../models/vacant.model");
 
 /**
  * Actualizar archivos, imagenes de perfil, CV e imagen de vacante
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 const updateFile = async (req, res) => {
-  const { collection, userId } = req.params;
+  const { collection, id } = req.params;
   let model = {};
-  let actualizada = false;
+  let secure_url = "";
+  let path = "";
+  let update = false;
 
   switch (collection) {
     case "users":
-      model = await User.findById(userId);
+      model = await User.findById(id);
       if (!model) {
         return res.status(400).json({
           message:
@@ -26,23 +27,41 @@ const updateFile = async (req, res) => {
         });
       }
 
+      path = `devjobs/profile_images/${id}`;
+
       // Eliminar imagen de perfil anterior del usuario
       if (model.image) {
-        deleteFile(model.image.split("/"), "devjobs/profile_images");
+        deleteFile(model.image.split("/"), path);
       }
 
       // Guardar nueva imagen de perfil
-      const secure_url = await uploadFile(
-        req.files.file,
-        "devjobs/profile_images"
-      );
-
+      secure_url = await uploadFile(req.files.file, path);
       model.image = secure_url;
-      actualizada = true;
+      update = true;
+      break;
+
+    case "vacants":
+      model = await Vacant.findById(id);
+      if (!model) {
+        return res.status(400).json({
+          message:
+            "No se puede actualizar la imagen de la vacante, vacante invalida.",
+        });
+      }
+      path = `devjobs/vacant_images/${id}`;
+      // Eliminar imagen anterior de la vacante
+      if (model.image) {
+        deleteFile(model.image.split("/"), path);
+      }
+
+      // Guardar nueva imagen de vacante
+      secure_url = await uploadFile(req.files.file, path);
+      model.image = secure_url;
+      update = true;
       break;
   }
   model.save();
-  res.json({ actualizada, message: "Archivo actualizado con éxito." });
+  res.json({ update, message: "Archivo actualizado con éxito." });
 };
 
 module.exports = {
