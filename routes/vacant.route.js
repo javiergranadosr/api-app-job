@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 const {
   create,
   getVacantByRecruiter,
+  deleteVacant,
 } = require("../controllers/index.controller");
 const { validateJwt } = require("../middlewares/validate.jwt");
 const { hasRole } = require("../middlewares/validate.role");
@@ -10,6 +11,7 @@ const validate = require("../middlewares/validate");
 const {
   existUserById,
   existCategoryById,
+  existVacantById,
 } = require("../helpers/custom.validations");
 
 const router = Router();
@@ -50,6 +52,18 @@ router.get(
   "/vacantsRecruiter",
   [validateJwt, hasRole("RECRUITER"), validate],
   getVacantByRecruiter
+);
+
+router.delete(
+  "/delete/:id",
+  [
+    validateJwt,
+    hasRole("RECRUITER"),
+    check("id", "El identificador de la vacante es invalido.").isMongoId(),
+    check("id").custom(existVacantById),
+    validate,
+  ],
+  deleteVacant
 );
 
 module.exports = router;

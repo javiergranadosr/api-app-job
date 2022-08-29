@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Role = require("../models/role.model");
 const Category = require("../models/category.model");
+const Vacant = require("../models/vacant.model");
 const mongoose = require("mongoose");
 
 /**
@@ -67,9 +68,29 @@ const existCategoryById = async (id) => {
   }
 };
 
+/**
+ * Valida vacante por id
+ * @param {*} id
+ */
+const existVacantById = async (id) => {
+  if (mongoose.isValidObjectId(id)) {
+    const exists = await Vacant.findById(id);
+    if (!exists) {
+      throw new Error(
+        `La vacante es invalida, favor de contactar a un administrador.`
+      );
+    }
+  } else {
+    throw new Error(
+      `La vacante es invalida, favor de contactar a un administrador.`
+    );
+  }
+};
+
 module.exports = {
   existUserById,
   existEmail,
   existRole,
   existCategoryById,
+  existVacantById
 };

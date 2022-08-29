@@ -36,8 +36,8 @@ const getVacantByRecruiter = async (req, res) => {
   try {
     const { author, limit = 5, page = 0 } = req.query;
     const [total, vacants] = await Promise.all([
-      Vacant.countDocuments({author}),
-      Vacant.find({author})
+      Vacant.countDocuments({ author }),
+      Vacant.find({ author })
         .skip(page)
         .limit(limit)
         .populate("author", "name")
@@ -53,4 +53,21 @@ const getVacantByRecruiter = async (req, res) => {
   }
 };
 
-module.exports = { create, getVacantByRecruiter };
+const deleteVacant = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const vacant = await Vacant.findByIdAndUpdate(id, {
+      status: false,
+      new: true,
+    });
+    res.json({ delete: true, message: `Vacante ${vacant.title} eliminada con éxito.` });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Hubo un error al eliminar vacante. Favor de hablar con un administrador.",
+    });
+  }
+};
+
+module.exports = { create, getVacantByRecruiter, deleteVacant };
