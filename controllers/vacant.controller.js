@@ -35,9 +35,10 @@ const create = async (req, res) => {
 const getVacantByRecruiter = async (req, res) => {
   try {
     const { author, limit = 5, page = 0 } = req.query;
+    const conditions = {status: true, $and: [{author}]};
     const [total, vacants] = await Promise.all([
-      Vacant.countDocuments({ author }),
-      Vacant.find({ author })
+      Vacant.countDocuments(conditions),
+      Vacant.find(conditions)
         .skip(page)
         .limit(limit)
         .populate("author", "name")
