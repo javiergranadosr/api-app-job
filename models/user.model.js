@@ -32,11 +32,15 @@ const UserSchema = Schema(
       type: Boolean,
       default: false,
     },
+    createdAt: {
+      type: Date,
+      default: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
+    },
+    updatedAt: {
+      type: Date,
+      required: false,
+    }
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
 );
 
 UserSchema.methods.toJSON = function () {

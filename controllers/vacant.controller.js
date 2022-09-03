@@ -32,10 +32,24 @@ const create = async (req, res) => {
   }
 };
 
+const getVacantById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let data = await Vacant.findById(id);
+    res.json({ data });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Hubo un error al obtener vacante. Favor de hablar con un administrador.",
+    });
+  }
+};
+
 const getVacantByRecruiter = async (req, res) => {
   try {
     const { author, limit = 5, page = 0 } = req.query;
-    const conditions = {status: true, $and: [{author}]};
+    const conditions = { status: true, $and: [{ author }] };
     const [total, vacants] = await Promise.all([
       Vacant.countDocuments(conditions),
       Vacant.find(conditions)
@@ -61,7 +75,10 @@ const deleteVacant = async (req, res) => {
       status: false,
       new: true,
     });
-    res.json({ delete: true, message: `Vacante ${vacant.title} eliminada con éxito.` });
+    res.json({
+      delete: true,
+      message: `Vacante ${vacant.title} eliminada con éxito.`,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -71,4 +88,4 @@ const deleteVacant = async (req, res) => {
   }
 };
 
-module.exports = { create, getVacantByRecruiter, deleteVacant };
+module.exports = { create, getVacantByRecruiter, deleteVacant, getVacantById };
