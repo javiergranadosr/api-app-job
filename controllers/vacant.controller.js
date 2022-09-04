@@ -1,4 +1,5 @@
 const Vacant = require("../models/vacant.model");
+const Salary = require("../models/salary.model");
 
 const create = async (req, res) => {
   try {
@@ -35,8 +36,8 @@ const create = async (req, res) => {
 const getVacantById = async (req, res) => {
   try {
     const id = req.params.id;
-    let data = await Vacant.findById(id);
-    res.json({ data });
+    let data = await Vacant.findById(id).populate("category", "name");
+    res.json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({
