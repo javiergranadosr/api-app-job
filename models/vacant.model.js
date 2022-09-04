@@ -7,7 +7,8 @@ const VacantSchema = Schema({
     required: [true, "El título de la vacante es requerido."],
   },
   salary: {
-    type: Number,
+    type: Schema.Types.ObjectId,
+    ref: "Salary",
     required: [true, "El salario de la vacante es requerido."],
   },
   category: {

@@ -13,6 +13,7 @@ const {
   existUserById,
   existCategoryById,
   existVacantById,
+  existSalaryById,
 } = require("../helpers/custom.validations");
 
 const router = Router();
@@ -29,7 +30,8 @@ router.post(
     check("author").custom(existUserById),
     check("title", "El título de la vacante es requerido.").not().isEmpty(),
     check("salary", "El salario de la vacante es requerido.").not().isEmpty(),
-    check("salary", "El formato del salario es invalido.").isNumeric(),
+    check("salary", "El formato del salario es invalido.").isMongoId(),
+    check("salary").custom(existSalaryById),
     check("category", "La categoría de la vacante es requerida.")
       .not()
       .isEmpty(),

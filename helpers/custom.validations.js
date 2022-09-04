@@ -2,6 +2,8 @@ const User = require("../models/user.model");
 const Role = require("../models/role.model");
 const Category = require("../models/category.model");
 const Vacant = require("../models/vacant.model");
+const Salary = require("../models/salary.model");
+
 const mongoose = require("mongoose");
 
 /**
@@ -87,10 +89,30 @@ const existVacantById = async (id) => {
   }
 };
 
+/**
+ * Valida salario por id
+ * @param {*} id
+ */
+const existSalaryById = async (id) => {
+  if (mongoose.isValidObjectId(id)) {
+    const exists = await Salary.findById(id);
+    if (!exists) {
+      throw new Error(
+        `La salario seleccionado es invalido, favor de contactar a un administrador.`
+      );
+    }
+  } else {
+    throw new Error(
+      `La salario seleccionado es invalido, favor de contactar a un administrador.`
+    );
+  }
+};
+
 module.exports = {
   existUserById,
   existEmail,
   existRole,
   existCategoryById,
-  existVacantById
+  existVacantById,
+  existSalaryById,
 };
