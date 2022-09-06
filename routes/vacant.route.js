@@ -5,6 +5,7 @@ const {
   getVacantByRecruiter,
   deleteVacant,
   getVacantById,
+  updateVacant
 } = require("../controllers/index.controller");
 const { validateJwt } = require("../middlewares/validate.jwt");
 const { hasRole } = require("../middlewares/validate.role");
@@ -79,6 +80,36 @@ router.delete(
     validate,
   ],
   deleteVacant
+);
+
+router.put(
+  "/update/:id",
+  [
+    validateJwt,
+    hasRole("RECRUITER"),
+    check("id", "El identificador de la vacante es requerido.").not().isEmpty(),
+    check("id", "El identificador de la vacante es invalido.").isMongoId(),
+    check("id").custom(existVacantById),
+    check("title", "El título de la vacante es requerido.").not().isEmpty(),
+    check("salary", "El salario de la vacante es requerido.").not().isEmpty(),
+    check("salary", "El formato del salario es invalido.").isMongoId(),
+    check("salary").custom(existSalaryById),
+    check("category", "La categoría de la vacante es requerida.")
+      .not()
+      .isEmpty(),
+    check(
+      "category",
+      "El identificador de la categoría es invalido."
+    ).isMongoId(),
+    check("category").custom(existCategoryById),
+    check("company", "El nombre de la empresa es requerido.").not().isEmpty(),
+    check("lastDate", "La fecha para postularse es requerida.").not().isEmpty(),
+    check("description", "La descripción de la vacante es requerida.")
+      .not()
+      .isEmpty(),
+    validate,
+  ],
+  updateVacant
 );
 
 module.exports = router;

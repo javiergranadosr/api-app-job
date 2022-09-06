@@ -91,4 +91,41 @@ const deleteVacant = async (req, res) => {
   }
 };
 
-module.exports = { create, getVacantByRecruiter, deleteVacant, getVacantById };
+const updateVacant = async (req, res) => {
+  try {
+    const vacantId = req.params.id;
+    const { title, salary, category, company, lastDate, description, image } =
+      req.body;
+
+    const data = {
+      title,
+      salary,
+      category,
+      company,
+      lastDate,
+      description,
+      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+    };
+
+    if (image) {
+      data.image = image;
+    }
+
+    const vacant = await Vacant.findByIdAndUpdate(vacantId, data, {
+      new: true,
+    });
+
+    res.status(200).json({ message: "Vacante actualizada con éxito.", vacant });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating vacant." });
+  }
+};
+
+module.exports = {
+  create,
+  getVacantByRecruiter,
+  deleteVacant,
+  getVacantById,
+  updateVacant,
+};

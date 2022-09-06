@@ -103,7 +103,7 @@ const existSalaryById = async (id) => {
     }
   } else {
     throw new Error(
-      `La salario seleccionado es invalido, favor de contactar a un administrador.`
+      `El salario seleccionado es invalido, favor de contactar a un administrador.`
     );
   }
 };
