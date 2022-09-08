@@ -43,7 +43,7 @@ const VacantSchema = Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+    default: new Date(),
   },
   updatedAt: {
     type: Date,

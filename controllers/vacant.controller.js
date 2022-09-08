@@ -104,7 +104,7 @@ const updateVacant = async (req, res) => {
       company,
       lastDate,
       description,
-      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+      updatedAt: new Date(),
     };
 
     if (image) {
