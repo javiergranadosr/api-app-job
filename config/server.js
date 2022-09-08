@@ -20,6 +20,7 @@ class Server {
       roles: "/api/v1/roles",
       vacants: "/api/v1/vacants",
       salaries: "/api/v1/salaries",
+      candidates: "/api/v1/candidates",
     };
 
     this.connection();
@@ -61,6 +62,10 @@ class Server {
     this.app.use(this.enpoints.roles, require("../routes/role.route"));
     this.app.use(this.enpoints.vacants, require("../routes/vacant.route"));
     this.app.use(this.enpoints.salaries, require("../routes/salary.route"));
+    this.app.use(
+      this.enpoints.candidates,
+      require("../routes/candidate.route")
+    );
   }
 
   listen() {

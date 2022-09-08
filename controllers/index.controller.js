@@ -5,6 +5,7 @@ const CategoryController = require("../controllers/category.controller");
 const RoleController = require("../controllers/role.controller");
 const VacantController = require("../controllers/vacant.controller");
 const SalaryController = require("../controllers/salary.controller");
+const CandidateController = require("../controllers/candidate.controller");
 
 module.exports = {
   ...UserController,
@@ -14,4 +15,5 @@ module.exports = {
   ...RoleController,
   ...VacantController,
   ...SalaryController,
+  ...CandidateController,
 };

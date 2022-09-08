@@ -3,6 +3,7 @@ const Role = require("../models/role.model");
 const Category = require("../models/category.model");
 const Vacant = require("../models/vacant.model");
 const Salary = require("../models/salary.model");
+const Candidate = require("../models/candidate.model");
 
 const mongoose = require("mongoose");
 
@@ -108,6 +109,23 @@ const existSalaryById = async (id) => {
   }
 };
 
+/**
+ * Valida si un candidato o candidata ya aplico en la vacante
+ * @param {*} id
+ */
+const existCandidate = async (id) => {
+  if (mongoose.isValidObjectId(id)) {
+    const exists = await Candidate.find({ candidate: id });
+    if (exists.length > 0) {
+      throw new Error(
+        `No es posible aplicar en esta vacante, ya ha aplicado anteriormente.`
+      );
+    }
+  } else {
+    throw new Error(`"El candidato o candidata que desea aplicar es invalido.`);
+  }
+};
+
 module.exports = {
   existUserById,
   existEmail,
@@ -115,4 +133,5 @@ module.exports = {
   existCategoryById,
   existVacantById,
   existSalaryById,
+  existCandidate,
 };
