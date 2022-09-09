@@ -28,7 +28,10 @@ const create = async (req, res) => {
     res.status(201).json({ message: "Vacante creada con éxito.", vacant });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error creating vacant." });
+    res.status(500).json({
+      message:
+        "Hubo un error al crear vacante. Favor de hablar con un administrador.",
+    });
   }
 };
 
@@ -118,7 +121,10 @@ const updateVacant = async (req, res) => {
     res.status(200).json({ message: "Vacante actualizada con éxito.", vacant });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error updating vacant." });
+    res.status(500).json({
+      message:
+        "Hubo un error al actualizar vacante. Favor de hablar con un administrador.",
+    });
   }
 };
 

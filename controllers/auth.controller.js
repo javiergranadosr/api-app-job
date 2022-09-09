@@ -34,7 +34,7 @@ const login = async (req, res) => {
     res.json({ token, data: user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error in login." });
+    res.status(500).json({ message: "Hubo un error al iniciar sesión. Favor de hablar con un administrador." });
   }
 };
 
