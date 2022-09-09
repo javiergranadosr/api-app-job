@@ -11,6 +11,7 @@ const { hasRole } = require("../middlewares/validate.role");
 const {
   getCandidates,
   applyCandidate,
+  getTotalCandidates,
 } = require("../controllers/index.controller");
 
 const router = Router();
@@ -50,6 +51,18 @@ router.get(
     validate,
   ],
   getCandidates
+);
+
+router.get(
+  "/total/:id",
+  [
+    validateJwt,
+    hasRole("RECRUITER"),
+    check("id", "El identificador de la vacante es invalido.").isMongoId(),
+    check("id").custom(existVacantById),
+    validate,
+  ],
+  getTotalCandidates
 );
 
 module.exports = router;
