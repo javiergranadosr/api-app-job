@@ -14,15 +14,14 @@ const applyCandidate = async (req, res) => {
 
 const getCandidates = async (req, res) => {
   try {
-    const id = req.params.id;
-    const { limit = 10, from = 0 } = req.query;
+    const { id, limit = 10, page = 0 } = req.query;
 
     const [total, candidates] = await Promise.all([
       Candidate.countDocuments({ vacant: id }),
       Candidate.find({ vacant: id })
-        .skip(from)
+        .skip(page)
         .limit(limit)
-        .populate("candidate", "name")
+        .populate("candidate", ["name", "email", "image"])
         .populate("vacant", "title"),
     ]);
 

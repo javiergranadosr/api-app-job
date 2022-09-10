@@ -42,7 +42,7 @@ router.post(
 );
 
 router.get(
-  "/candidatesByVacant/:id",
+  "/candidatesByVacant",
   [
     validateJwt,
     hasRole("RECRUITER"),
