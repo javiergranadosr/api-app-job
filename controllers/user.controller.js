@@ -37,20 +37,34 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const { name, email, password } = req.body;
+    const { name, email, phone, city, password, newPassword } = req.body;
 
-    let data = { name };
+    let data = { name, phone, city, updatedAt: new Date() };
 
     if (email) {
       data.email = email;
     }
 
-    if (password) {
+    if (password && newPassword) {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: "Usuario / Password incorrectos." });
+      }
+
+      const validatePassword = bcryptjs.compareSync(password, user.password);
+      if (!validatePassword) {
+        return res
+          .status(400)
+          .json({ message: "Usuario / Password incorrectos." });
+      }
+
       const salt = bcryptjs.genSaltSync();
-      data.password = bcryptjs.hashSync(password, salt);
+      data.password = bcryptjs.hashSync(newPassword, salt);
     }
 
-    const user = await User.findByIdAndUpdate(userId, data, {new: true});
+    const user = await User.findByIdAndUpdate(userId, data, { new: true });
 
     res.json({ message: "Cuenta actualizada con éxito.", data: user });
   } catch (error) {

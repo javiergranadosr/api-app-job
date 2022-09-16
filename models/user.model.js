@@ -11,6 +11,14 @@ const UserSchema = Schema(
       required: [true, "El correo electrónico es requerido."],
       unique: true,
     },
+    phone: {
+      type: String,
+      required: false
+    },
+    city: {
+      type: String,
+      required: false
+    },
     password: {
       type: String,
       required: [true, "La contraseña es requerida."],
