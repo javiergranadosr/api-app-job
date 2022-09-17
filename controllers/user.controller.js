@@ -76,7 +76,22 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let data = await User.findById(id);
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Hubo un error al obtener perfil de usuario. Favor de hablar con un administrador.",
+    });
+  }
+};
+
 module.exports = {
   createUser,
   updateUser,
+  getUserById,
 };
