@@ -5,7 +5,8 @@ const {
   getVacantByRecruiter,
   deleteVacant,
   getVacantById,
-  updateVacant
+  updateVacant,
+  getVacants,
 } = require("../controllers/index.controller");
 const { validateJwt } = require("../middlewares/validate.jwt");
 const { hasRole } = require("../middlewares/validate.role");
@@ -56,7 +57,6 @@ router.get(
   "/detailVacant/:id",
   [
     validateJwt,
-    hasRole("RECRUITER"),
     check("id", "El identificador de la vacante es invalido.").isMongoId(),
     check("id").custom(existVacantById),
     validate,
@@ -69,6 +69,8 @@ router.get(
   [validateJwt, hasRole("RECRUITER"), validate],
   getVacantByRecruiter
 );
+
+router.get("/vacantsHome", getVacants);
 
 router.delete(
   "/delete/:id",

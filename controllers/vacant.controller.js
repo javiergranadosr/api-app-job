@@ -1,4 +1,6 @@
 const Vacant = require("../models/vacant.model");
+const { ObjectId } = require("mongoose").Types;
+
 
 const create = async (req, res) => {
   try {
@@ -55,6 +57,44 @@ const getVacantByRecruiter = async (req, res) => {
   try {
     const { author, limit = 5, page = 0 } = req.query;
     const conditions = { status: true, $and: [{ author }] };
+    const [total, vacants] = await Promise.all([
+      Vacant.countDocuments(conditions),
+      Vacant.find(conditions)
+        .skip(page)
+        .limit(limit)
+        .populate("author", "name")
+        .populate("category", "name")
+        .populate("salary", "name"),
+    ]);
+    res.json({ total, vacants });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message:
+        "Hubo un error al obtener vacantes. Favor de hablar con un administrador.",
+    });
+  }
+};
+
+const getVacants = async (req, res) => {
+  try {
+    const { term, category, salary, limit = 10, page = 0 } = req.query;
+    let and = [{ status: true }];
+    const regex = new RegExp(term, "i");
+
+    if (category && ObjectId.isValid(category)) {
+      and.push({ category });
+    }
+
+    if (salary && ObjectId.isValid(salary)) {
+      and.push({ salary });
+    }
+
+    const conditions = {
+      $or: [{ title: regex }, { company: regex }],
+      $and: and,
+    };
+
     const [total, vacants] = await Promise.all([
       Vacant.countDocuments(conditions),
       Vacant.find(conditions)
@@ -134,4 +174,5 @@ module.exports = {
   deleteVacant,
   getVacantById,
   updateVacant,
+  getVacants,
 };
