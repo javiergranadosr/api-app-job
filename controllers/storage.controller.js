@@ -17,6 +17,7 @@ const updateFile = async (req, res) => {
     let secure_url = "";
     let path = "";
     let update = false;
+    let message = "";
 
     switch (collection) {
       case "users":
@@ -39,6 +40,7 @@ const updateFile = async (req, res) => {
         secure_url = await uploadFile(req.files.file, path);
         model.image = secure_url;
         update = true;
+        message = "Imagen de perfil actualizada con éxito.";
         break;
 
       case "vacants":
@@ -59,10 +61,11 @@ const updateFile = async (req, res) => {
         secure_url = await uploadFile(req.files.file, path);
         model.image = secure_url;
         update = true;
+        message = "Imagen de la vacante actualizada con éxito.";
         break;
     }
     model.save();
-    res.json({ update, message: "Archivo actualizado con éxito." });
+    res.json({ update, message });
   } catch (error) {
     console.log(error);
     res.status(500).json({
