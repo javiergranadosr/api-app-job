@@ -12,6 +12,7 @@ const {
   getCandidates,
   applyCandidate,
   getTotalCandidates,
+  getVacantByCandidate,
 } = require("../controllers/index.controller");
 
 const router = Router();
@@ -35,7 +36,6 @@ router.post(
     check("vacant", "La vacante de la vacante es requerida.").not().isEmpty(),
     check("vacant", "El identificador de la vacante es invalido.").isMongoId(),
     check("vacant").custom(existVacantById),
-    check("candidate").custom(existCandidate),
     validate,
   ],
   applyCandidate
@@ -63,6 +63,12 @@ router.get(
     validate,
   ],
   getTotalCandidates
+);
+
+router.get(
+  "/vacantsCandidate",
+  [validateJwt, hasRole("DEVELOPER"), validate],
+  getVacantByCandidate
 );
 
 module.exports = router;
