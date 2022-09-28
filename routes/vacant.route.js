@@ -56,7 +56,6 @@ router.post(
 router.get(
   "/detailVacant/:id",
   [
-    validateJwt,
     check("id", "El identificador de la vacante es invalido.").isMongoId(),
     check("id").custom(existVacantById),
     validate,
