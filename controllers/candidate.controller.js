@@ -1,17 +1,35 @@
 const Candidate = require("../models/candidate.model");
+const Vacant = require("../models/vacant.model");
 
 const applyCandidate = async (req, res) => {
   try {
     const { candidate, vacant } = req.body;
     const existCandidate = await Candidate.findOne({ candidate, vacant });
+    const todayDate = new Date();
+
     if (existCandidate) {
-      if (existCandidate.vacant.toString() === vacant) {
-        return res.status(400).json({
-          message:
-            "No es posible aplicar en esta vacante, ya ha aplicado anteriormente.",
-        });
-      }
+      return res.status(400).json({
+        message:
+          "No es posible aplicar en esta vacante, ya ha aplicado anteriormente.",
+      });
     }
+
+    const dataVacant = await Vacant.findById(vacant);
+
+    if (!dataVacant) {
+      return res.status(400).json({
+        message:
+          "La vacante es invalida, favor de contactar a un administrador.",
+      });
+    }
+    
+    if (todayDate.getTime() > dataVacant.lastDate.getTime()) {
+      return res.json({
+        message:
+          "Su postulación no fue realizada con éxito la fecha para postulaciones ha finalizado.",
+      });
+    }
+
     const data = new Candidate({ candidate, vacant });
     await data.save();
     res.status(201).json({ message: "Su postulación ha sido un éxito.", data });
