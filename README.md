@@ -7,4 +7,4 @@
 * Mongo DB
 
 
-### Demo plataforma:  https://jazzy-sawine-acc9bd.netlify.app/
+### Demo plataforma: https://idyllic-smakager-2b226a.netlify.app/
